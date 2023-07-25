@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .upload-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .upload-form button {
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Upload</h1>
+    <form action="/api/upload" method="post" enctype="multipart/form-data" class="upload-form">
+        <input type="file" name="file" required><br>
+        <input type="submit" value="Upload">
+    </form>
+</body>
+</html>

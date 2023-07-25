@@ -1,0 +1,8 @@
+# ignore folders
+runs
+test
+util/__pycache__
+
+# ignore all images and weight
+*.jpg
+*.pt
