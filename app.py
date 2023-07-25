@@ -64,77 +64,14 @@ def upload_file():
                 "serail_value": serial_val,
                 "datetime": datetime.now()
             })
-    
-
-        
-        # for ser in serial:
-        #     # sx,sy, sx1, sy1 = ser
-        #     # img_ser = plate[sy:sy1, sx:sx1]
-
-        #     # txt = reader.readtext(img_ser, detail = 0, paragraph=True)[0]
-        #     # serials.append(txt)
-
-        #     serials.append(ser)
-
-
-
-    # result = []
-
-    # for d in data:
-    #     x,y,x1,y1 = d
-    #     txt = " "
-    #     # plate = image[y:y1, x:x1]
-    #     place = extract.get_info(img=image)
-    #     # cv2.imwrite('result.jpg', image[y:y1, x:x1])
-    #     # pl = cv2.imread('result.jpg')
-    #     serials = extract.roi(image, 1)
-    #     for serial in serials:
-    #         if len(serial) > 0:
-    #             a,b, a1, b1 = serial
-    #             # read with origin image 
-    #             # processed = image_pre.pre_process(plate[b:b1, a:a1])
-    #             # sharpen = image_pre.img_shapen(processed)       
-    #             # txt = pytesseract.image_to_string(processed, config=custom_conf)
-    #             txt = reader.readtext(image[b:b1, a:a1], detail = 0, paragraph=True)[0]
-    #             # txt = reader.readtext(sharpen, detail = 0, paragraph = True )[0]                       
-    #             cv2.imwrite('result.jpg', image[b:b1, a:a1])
-
-            
-    #     # if len(serials) > 0:
-    #     #     serial = serials[0]
-
-    #     #     ext = image[y:y1, x:x1]
-
-    #     #     info = extract.xyxy_serial(ext)
-    #     #     for inf in info:
-    #     #         if len(inf) > 0:
-    #     #             a,b,a1,b1 = info[0]
-    #     #             # read with origin image 
-    #     #             processed = image_pre.pre_process(ext[b:b1, a:a1])
-    #     #             sharpen = image_pre.img_shapen(processed)       
-    #     #             # txt = pytesseract.image_to_string(processed, config=custom_conf)
-    #     #             txt = reader.readtext(ext[b:b1, a:a1], detail = 0, paragraph=True)[0]
-    #     #             # txt = reader.readtext(sharpen, detail = 0, paragraph = True )[0]                       
-    #     #             cv2.imwrite('result.jpg', sharpen)
-    #     #             # txt = txt.strip()
-
-
-    #     result.append({
-    #         'place' : place,
-    #         'xyxy': d,
-    #         'info' : txt
-    #     })
 
     # save the figure
     cv2.imwrite('image.jpg', image)
-
-    # return send_file('image.jpg', mimetype='image/jpeg')
 
     return jsonify({
         'filename': file.filename,
         'predicttion': result
     })
-
 
 
 if __name__ == '__main__':
