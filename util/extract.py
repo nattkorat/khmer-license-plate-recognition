@@ -45,6 +45,7 @@ def roi(img, opt: int): # return only one of detect object
 def get_info(img):
     result = info_model(img, size= 640)
     class_names = "" # for getting the class name
+    bbox = []
     for re in result.xyxy:
         # boxes = r.boxes
         # for b in boxes:
@@ -56,8 +57,9 @@ def get_info(img):
 
             if conf > 0.8:
                 class_names = info_model.names[int(c)]
+                bbox = [int(i) for i in r[:4]]
 
-    return class_names
+    return class_names, bbox
 
 
 def get_area(model_result, option = 0):
