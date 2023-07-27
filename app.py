@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import cv2
+import torch
 import numpy as np
 from util import extract, plotting, post_process
 import easyocr
 from datetime import datetime
 import base64
 
+# check if GPU is available
+is_gpu = torch.cuda.is_available()
+print('GPU:', is_gpu)
 
-reader = easyocr.Reader(['en'], gpu=True, verbose= False)
+reader = easyocr.Reader(['en'], gpu = is_gpu, verbose= False)
 
 app = Flask(__name__)
 
