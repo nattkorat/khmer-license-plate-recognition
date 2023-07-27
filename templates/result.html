@@ -47,7 +47,13 @@
         </div>
         <div class="prediction" id="prediction">
             <h2>Prediction:</h2>
-            {{ prediction }}
+            {% for pred in prediction %}
+                <hr>
+                <p>Plate Name: <i> {{ pred['plate_name']}} </i></p>
+                <p>Serial Value: <i> {{pred['serial_value']}}</i></p>
+                <p>Detected Time: <i>{{pred['datetime']}}</i></p>
+
+            {% endfor %}
             <span class="copy-icon" onclick="copyPrediction()">📋</span>
         </div>
     </div>

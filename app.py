@@ -75,7 +75,7 @@ def upload_file():
                 "plate_roi": r,
                 "serial_roi": serials,
                 "plate_name": place,
-                "serail_value": serial_val,
+                "serial_value": serial_val,
                 "datetime": datetime.now()
             })
 
