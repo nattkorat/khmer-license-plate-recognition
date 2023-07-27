@@ -5,12 +5,12 @@ import torch
 # plate_model = YOLO('runs/detect/plate_and_info_det/weights/best.pt')
 # plate_model = YOLO('plate_detect.pt')
 # info_model = YOLO('runs/detect/place_classify/weights/best.pt') # yolov8 model
-info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='/home/nattkorat/Desktop/klpr-training/yolov5/runs/train/exp4/weights/best.pt') # new model of yolov5
+info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/place_detection_model_yolov5.pt') # new model of yolov5
 
 # seg_model = YOLO('runs\detect/plate_info_v2/weights/best.pt')
 # seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='runs/detect/v5_plat_info/best.pt')
 
-seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='/home/nattkorat/Desktop/klpr-training/yolov5/runs/train/exp3/weights/best.pt')
+seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/localize_plate_serial_model_yolov5.pt')
 
 
 
