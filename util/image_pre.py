@@ -41,7 +41,7 @@ if __name__ == '__main__':
     reader = easyocr.Reader(['en'], verbose=False)
 
     
-    image = cv2.imread("img/img_2330kg_cham.jpg")
+    image = cv2.imread("serial.jpg")
     thres = pre_process(image)
 
     sh_img = img_shapen(thres)
