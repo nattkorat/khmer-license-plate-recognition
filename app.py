@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, send_file
 import cv2
 import torch
 import numpy as np
-from util import extract, plotting, post_process
+from util import extract, plotting, post_process, image_pre
 import easyocr
 from datetime import datetime
 import base64
@@ -11,7 +11,7 @@ import base64
 is_gpu = torch.cuda.is_available()
 print('GPU:', is_gpu)
 
-reader = easyocr.Reader(['en'], gpu = is_gpu, verbose= False)
+reader = easyocr.Reader(['en'], gpu = is_gpu)
 
 app = Flask(__name__)
 
@@ -39,8 +39,8 @@ def upload_file():
         plate = image[y:y1, x:x1].copy()
         place, bbox = extract.get_info(plate)
 
-        if len(bbox) > 0:
-            plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
+        # if len(bbox) > 0:
+        #     plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
 
         image = plotting.plotting(image, r, place)
         
@@ -50,25 +50,29 @@ def upload_file():
             serials = serials[0]
             a, b, a1, b1 = serials
 
-            if len(bbox) > 0:
+            # if len(bbox) > 0:
                 # we need to consider the type of license plate (us type or europe type)
-                if bbox[0] > a:
-                    plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1) # for three lines
-                else:
-                    plate = cv2.rectangle(plate, (bbox[0], 0), (bbox[2], y1), (255,255,255), -1) # for two lines
+                # if bbox[0] > a:
+                #     plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1) # for three lines
+                # else:
+                #     plate = cv2.rectangle(plate, (bbox[0], 0), (bbox[2], y1), (255,255,255), -1) # for two lines
 
             # cv2.imwrite('image.jpg', plate[b-5:b1+5, a-5:a1+5])
-            # info = reader.readtext(plate[b-5:b1+5, a-5:a1+5])
+            pre_img = image_pre.pre_process(plate[b:b1, a:a1])
+            sh_img = image_pre.img_shapen(pre_img)
 
-            info = reader.readtext(plate[0:b1, 0:a1])
-            cv2.imwrite('serial.jpg', plate[0:b1, 0:a1])
+            info = reader.readtext(sh_img, paragraph=True)
+
+            # info = reader.readtext(plate[0:b1, 0:a1])
+            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
 
             serial_val = []
+
+            print(info)
             
             for inf in info:
-                txt = post_process.remove_space_special_chars(inf[1]).upper()
+                txt = post_process.remove_space_special_chars(inf[-1]).upper()
                 serial_val.append(txt) # get data from reader
-                serial_val.append(inf[2]) # get the conf score
 
                 # plot to the info to the image
                 image = plotting.plotting(image, r, place + ' ' + txt)
