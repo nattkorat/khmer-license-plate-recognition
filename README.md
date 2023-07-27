@@ -19,7 +19,7 @@ You have to create a folder "models" to store our model. You can run this comman
 
         mkdir models
 
-You need to download the model from the drive and store it in that `models` directory. [download](https://cadtedu-my.sharepoint.com/:f:/g/personal/korat_natt_cadt_edu_kh/Et6APpp0NwlHkmpuS0XCkpYBiCNNwtHFhyCpIqZI-sKH7A?e=XxC4C1)
+You need to download the model from the drive and store it in that `models` directory. <a href="https://cadtedu-my.sharepoint.com/:f:/g/personal/korat_natt_cadt_edu_kh/Et6APpp0NwlHkmpuS0XCkpYBiCNNwtHFhyCpIqZI-sKH7A?e=XxC4C1" target="_blank">Download Model</a>
 
 
 ### Testing 
