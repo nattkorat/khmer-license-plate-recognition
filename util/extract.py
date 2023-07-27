@@ -5,12 +5,12 @@ import torch
 # plate_model = YOLO('runs/detect/plate_and_info_det/weights/best.pt')
 # plate_model = YOLO('plate_detect.pt')
 # info_model = YOLO('runs/detect/place_classify/weights/best.pt') # yolov8 model
-info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='/home/nattkorat/Desktop/trainning/yolov5/runs/train/exp4/weights/best.pt') # new model of yolov5
+info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/place_detection_model_yolov5.pt') # new model of yolov5
 
 # seg_model = YOLO('runs\detect/plate_info_v2/weights/best.pt')
 # seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='runs/detect/v5_plat_info/best.pt')
 
-seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='/home/nattkorat/Desktop/trainning/yolov5/runs/train/exp3/weights/best.pt')
+seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/localize_plate_serial_model_yolov5.pt')
 
 
 
@@ -45,6 +45,7 @@ def roi(img, opt: int): # return only one of detect object
 def get_info(img):
     result = info_model(img, size= 640)
     class_names = "" # for getting the class name
+    bbox = []
     for re in result.xyxy:
         # boxes = r.boxes
         # for b in boxes:
@@ -56,8 +57,9 @@ def get_info(img):
 
             if conf > 0.8:
                 class_names = info_model.names[int(c)]
+                bbox = [int(i) for i in r[:4]]
 
-    return class_names
+    return class_names, bbox
 
 
 def get_area(model_result, option = 0):

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ filename }}</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 20px;
+        }
+        .image-container {
+            margin-bottom: 10px;
+        }
+        .image {
+            max-width: 100%;
+            height: auto;
+        }
+        .prediction {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            white-space: pre-wrap;
+        }
+        .copy-icon {
+            font-size: 18px;
+            color: #007bff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form action="/" method="get">
+        <input type="submit" value="Back">
+    </form>
+    <div class="container">
+        <div class="image-container">
+            <img class="image" src="data:image/jpeg;base64,{{ base64_image }}" alt="Result">
+        </div>
+        <div class="prediction" id="prediction">
+            <h2>Prediction:</h2>
+            {% for pred in prediction %}
+                <hr>
+                <p>Plate Name: <i> {{ pred['plate_name']}} </i></p>
+                <p>Serial Value: <i> {{pred['serial_value']}}</i></p>
+                <p>Detected Time: <i>{{pred['datetime']}}</i></p>
+
+            {% endfor %}
+            <span class="copy-icon" onclick="copyPrediction()">📋</span>
+        </div>
+    </div>
+
+    <script>
+        function copyPrediction() {
+            // Get the prediction text element
+            var predictionText = document.getElementById("prediction");
+
+            // Create a temporary input element to hold the prediction text
+            var tempInput = document.createElement("textarea");
+            tempInput.value = predictionText.textContent;
+            document.body.appendChild(tempInput);
+
+            // Select the text in the input element
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the selected text
+            document.execCommand("copy");
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // Show a notification that the text is copied (optional)
+            alert("Prediction copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
