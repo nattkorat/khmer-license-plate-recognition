@@ -37,8 +37,17 @@ def upload_file():
 
 
         plate = image[y:y1, x:x1].copy()
+        cv2.imwrite('plate.jpg', plate)
+
         place, bbox = extract.get_info(plate)
 
+        pl_img = plate.copy()
+        if len(bbox) >= 4:
+            cv2.rectangle(pl_img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0,255,0), 2)
+
+        cv2.imwrite('place_det.jpg', pl_img)
+
+        
         # if len(bbox) > 0:
         #     plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
 
@@ -57,7 +66,8 @@ def upload_file():
                 # else:
                 #     plate = cv2.rectangle(plate, (bbox[0], 0), (bbox[2], y1), (255,255,255), -1) # for two lines
 
-            # cv2.imwrite('image.jpg', plate[b-5:b1+5, a-5:a1+5])
+            cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
+
             pre_img = image_pre.pre_process(plate[b:b1, a:a1])
             sh_img = image_pre.img_shapen(pre_img)
 
@@ -71,7 +81,12 @@ def upload_file():
             print(info)
             
             for inf in info:
-                txt = post_process.remove_space_special_chars(inf[-1]).upper()
+                # txt = post_process.remove_space_special_chars(inf[-1]).upper()
+                txt = inf[-1]
+
+                # clean text
+                if place not in ['Cambodia', 'State', 'Police']:
+                    txt = post_process.char_map(txt) # need to apply type of license plate next time
                 serial_val.append(txt) # get data from reader
 
                 # plot to the info to the image
