@@ -104,6 +104,14 @@ def xyxy_serial(plate):
 if __name__ == '__main__': # to test if it works or not
     
     import cv2
+    import plotting
 
-    img = cv2.imread('img/motor_license.jpg')
-    
+    img = cv2.imread('place_det.jpg')
+    result = roi(img, 1)
+    print(result)
+    for re in result:
+        img = plotting.plotting(img, re)
+
+    cv2.imshow('test', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

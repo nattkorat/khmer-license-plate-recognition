@@ -56,10 +56,10 @@ def char_map(string):
         for i in range(3, length):
             string[i] = char_to_num(string[i])
 
-        # convert back to str
-        string = ''.join(string).upper()
+    # convert back to str
+    string = ''.join(string).upper()
 
     return string
 
 if __name__ == '__main__':
-    print(char_map('I4B - 5Obo'))
+    print(char_map('I6.661'))

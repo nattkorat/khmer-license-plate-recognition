@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
 
-import cv2
-import numpy as np
-
-import cv2
 
 def pre_process(img):
     # Stretch the image to have a width of 640 and maintain the aspect ratio
@@ -15,8 +11,11 @@ def pre_process(img):
     # Resize the image
     resized_img = cv2.resize(img, (desired_width, desired_height), interpolation=cv2.INTER_LINEAR)
 
+    img = cv2.fastNlMeansDenoisingColored(resized_img, None, 10, 10, 7, 21)
+
     # Convert the image to grayscale
-    gray_img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2GRAY)
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
 
     # Apply Gaussian blur to reduce noise
     blurred_img = cv2.GaussianBlur(gray_img, (5, 5), 0)
@@ -25,7 +24,6 @@ def pre_process(img):
     _, thresholded_image = cv2.threshold(blurred_img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     return thresholded_image
-
 
 
 
@@ -42,6 +40,8 @@ def img_shapen(img):
     sh_img = cv2.filter2D(img, -1, sharpen_filter)
 
     return sh_img
+
+
     
 
 if __name__ == '__main__':

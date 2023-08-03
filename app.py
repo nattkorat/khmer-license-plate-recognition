@@ -87,6 +87,39 @@ def upload_file():
                 # clean text
                 if place not in ['Cambodia', 'State', 'Police']:
                     txt = post_process.char_map(txt) # need to apply type of license plate next time
+                else:
+                    txt = post_process.remove_space_special_chars(txt).upper()
+                serial_val.append(txt) # get data from reader
+
+                # plot to the info to the image
+                image = plotting.plotting(image, r, place + ' ' + txt)
+
+                print(txt)
+        else:
+            if len(bbox) > 0:
+                plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
+
+            pre_img = image_pre.pre_process(plate)
+            sh_img = image_pre.img_shapen(pre_img)
+
+            info = reader.readtext(sh_img, paragraph=True)
+
+            # info = reader.readtext(plate[0:b1, 0:a1])
+            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
+
+            serial_val = []
+
+            print(info)
+            
+            for inf in info:
+                # txt = post_process.remove_space_special_chars(inf[-1]).upper()
+                txt = inf[-1]
+
+                # clean text
+                if place not in ['Cambodia', 'State', 'Police']:
+                    txt = post_process.char_map(txt) # need to apply type of license plate next time
+                else:
+                    txt = post_process.remove_space_special_chars(txt).upper()
                 serial_val.append(txt) # get data from reader
 
                 # plot to the info to the image
@@ -94,13 +127,14 @@ def upload_file():
 
                 print(txt)
 
-            result.append({
-                "plate_roi": r,
-                "serial_roi": serials,
-                "plate_name": place,
-                "serial_value": serial_val,
-                "datetime": datetime.now()
-            })
+
+        result.append({
+            "plate_roi": r,
+            "serial_roi": serials,
+            "plate_name": place,
+            "serial_value": serial_val,
+            "datetime": datetime.now()
+        })
 
     # save the figure
     cv2.imwrite('image.jpg', image)
