@@ -7,3 +7,5 @@ util/__pycache__
 *.jpg
 *.pt
 *.ipynb
+*.mp4
+*.avi

@@ -41,15 +41,17 @@ def char_map(string):
         if not first.isdigit():
             string[0] = char_to_num(first)
 
-        second = string[1] # the second character must be str
-        if second.isdigit():
-            string[1] = num_to_char(second)
-        
-        third = string[2] # has two case if len > 6 is letter else number
-        if length > 6:
-            string[2] = num_to_char(third)
-        else:
-            string[2] = char_to_num(third)
+        if length >= 2:
+            second = string[1] # the second character must be str
+            if second.isdigit():
+                string[1] = num_to_char(second)
+                
+        if length >= 3:
+            third = string[2] # has two case if len > 6 is letter else number
+            if length > 6:
+                string[2] = num_to_char(third)
+            else:
+                string[2] = char_to_num(third)
 
         
         # for other must be number
