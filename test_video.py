@@ -10,7 +10,7 @@ print('GPU:', is_gpu)
 reader = easyocr.Reader(['en'], gpu = is_gpu)
 
 # Replace 'path_to_video_file.mp4' with the actual path to your video file
-video_path = 'vid.mp4'
+video_path = 'IMG_04.mp4'
 
 # Create a VideoCapture object to read the video file
 cap = cv2.VideoCapture(video_path)
@@ -46,7 +46,7 @@ while True:
         if len(bbox) >= 4:
             cv2.rectangle(pl_img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0,255,0), 2)
 
-        cv2.imwrite('place_det.jpg', pl_img)
+        # cv2.imwrite('place_det.jpg', pl_img)
 
         image = plotting.plotting(image, r, place)
         
@@ -56,7 +56,7 @@ while True:
             serials = serials[0]
             a, b, a1, b1 = serials
 
-            cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
+            # cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
 
             pre_img = image_pre.pre_process(plate[b:b1, a:a1])
             sh_img = image_pre.img_shapen(pre_img)
@@ -64,7 +64,7 @@ while True:
             info = reader.readtext(sh_img, paragraph=True)
 
             # info = reader.readtext(plate[0:b1, 0:a1])
-            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
+            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
 
             serial_val = []
 
