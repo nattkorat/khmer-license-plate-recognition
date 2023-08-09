@@ -2,10 +2,12 @@
 runs
 test
 util/__pycache__
+test_img
 
-# ignore all images, weights and notebook
+# ignore all images, weights and notebook and data
 *.jpg
 *.pt
 *.ipynb
 *.mp4
 *.avi
+*.csv

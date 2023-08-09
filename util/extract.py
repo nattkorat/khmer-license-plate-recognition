@@ -12,7 +12,7 @@ def roi(img, opt: int): # return only one of detect object
     '''
         Extract only Region of Interest (license plate, or region of serial in plate)
         --------------
-        img: source of image or array image
+        img: source of image or array of an image
         opt: roi (0 for whole plate, 1 for serial)
         
     '''
