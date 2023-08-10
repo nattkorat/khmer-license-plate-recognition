@@ -31,37 +31,58 @@ def char_to_num(char):
     return char
 
 
-def char_map(string):
-    string = list(remove_space_special_chars(string.lower()))
+def char_map(txt, label = ''):
+    string = list(remove_space_special_chars(txt.lower()))
+    print(string)
     length = len(string)
 
-    if length > 0:
-        first = string[0]
-        # replace char with num
-        if not first.isdigit():
-            string[0] = char_to_num(first)
-
-        if length >= 2:
-            second = string[1] # the second character must be str
-            if second.isdigit():
-                string[1] = num_to_char(second)
-                
-        if length >= 3:
-            third = string[2] # has two case if len > 6 is letter else number
-            if length > 6:
-                string[2] = num_to_char(third)
-            else:
-                string[2] = char_to_num(third)
-
-        
-        # for other must be number
-        for i in range(3, length):
+    if label in ['Police', 'State', 'RCAF']:
+        for i in range(length):
             string[i] = char_to_num(string[i])
+            print(string[i])
+        string.insert(1, '-')
+        
+    elif label == 'Cambodia':
+        string = list(txt)
+        for i in range(len(string)):
+            if string[i] in ['_', ',', '*']:
+                string[i] = '.'
+            if string[i] == ' ':
+                string[i] = ''
 
-    # convert back to str
+    else:
+        if length > 0:
+            first = string[0]
+            # replace char with num
+            if not first.isdigit():
+                string[0] = char_to_num(first)
+
+            if length >= 2:
+                second = string[1] # the second character must be str
+                if second.isdigit():
+                    string[1] = num_to_char(second)
+                    
+            if length >= 3:
+                third = string[2] # has two case if len > 6 is letter else number
+                if length > 6:
+                    string[2] = num_to_char(third)
+                else:
+                    string[2] = char_to_num(third)
+            
+            # for other must be number
+            for i in range(3, length):
+                string[i] = char_to_num(string[i])
+
+        if length == 7:
+            string.insert(3, '-')
+        
+        if length == 6:
+            string.insert(2, '-')
+
+
+    
     string = ''.join(string).upper()
-
     return string
 
 if __name__ == '__main__':
-    print(char_map('I6.661'))
+    print(char_map('2I6.661', 'Cambodia'))

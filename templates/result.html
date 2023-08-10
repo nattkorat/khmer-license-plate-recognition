@@ -45,20 +45,19 @@
         <div class="image-container">
             <img class="image" src="data:image/jpeg;base64,{{ base64_image }}" alt="Result">
         </div>
-        <div class="prediction" id="prediction">
-            <h2>Prediction:</h2>
-            {% for pred in prediction %}
-                <hr>
-                <p>Plate Name: <i> {{ pred['plate_name']}} </i></p>
-                <p>Serial Value: <i> {{pred['serial_value']}}</i></p>
-                <p>Detected Time: <i>{{pred['datetime']}}</i></p>
-
-            {% endfor %}
-            <span class="copy-icon" onclick="copyPrediction()">📋</span>
+        <div class="prediction">
+            <h2>Prediction: <span class="copy-icon" onclick="copyPrediction()">📋</span></h2>
+            <pre id="prediction"></pre>
+            
         </div>
     </div>
 
     <script>
+        var predictionData = {{ prediction|tojson|safe }};
+        var predictionText = JSON.stringify(predictionData, null, 2);
+        document.getElementById("prediction").textContent = predictionText;
+
+
         function copyPrediction() {
             // Get the prediction text element
             var predictionText = document.getElementById("prediction");

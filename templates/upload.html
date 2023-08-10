@@ -10,24 +10,63 @@
         h1 {
             text-align: center;
         }
-        .upload-form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
         .upload-form input[type="file"] {
             margin-bottom: 10px;
         }
-        .upload-form button {
-            display: block;
-            margin: 10px auto;
+        #sub{
+            width: 150px;
+            padding: 15px;
+            margin: 10px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 20px;
+            background-color: azure;
+            height: 40vh;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <h1>Image Upload</h1>
-    <form action="/api/upload" method="post" enctype="multipart/form-data" class="upload-form">
-        <input type="file" name="file" accept="image/*" required><br>
-        <input type="submit" value="Upload">
+    <form action="/api/upload" method="post" enctype="multipart/form-data" class="ontainer">
+        <input type="file" name="file" id="imageInput" accept="image/*" required><br>
+        <div id="imageContainer">
+            <img id="uploadedImage" src="#" alt="Uploaded Image" style="max-width: 100%; max-height: 400px;">
+        </div>
+        <input id="sub" type="submit" value="Start Processing">
     </form>
+     <!-- JavaScript to handle file upload and display -->
+     <script>
+        const imageInput = document.getElementById('imageInput');
+        const uploadedImage = document.getElementById('uploadedImage');
+        const proce = document.getElementById('sub');
+
+        uploadedImage.style.display = "none";
+        proce.style.display = "none";
+
+        imageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            if (file) {
+                // Create a FileReader to read the selected file
+                const reader = new FileReader();
+
+                // When the file is loaded, set the image source to the data URL
+                reader.onload = (e) => {
+                    uploadedImage.src = e.target.result;
+                };
+
+                uploadedImage.style.display = "block";
+                proce.style.display = "block";
+                
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>

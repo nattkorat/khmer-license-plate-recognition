@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLPR Demo</title>
     <style>
-        h1{
-            text-align: center;
+        *{
+            color: white;
+            margin: 0;
         }
         div{
             width: 100%;
@@ -17,23 +18,52 @@
         input{
             width: 150px;
             margin: 10px;
+            margin-top: 10vh;
             display: inline;
+            background-color: rgb(43, 43, 58);
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 1s;
+            border: none;
+        }
+        input:hover{
+            background-color: rgb(83, 13, 56);
+        }
+        .container{
+            width: 100%;
+            height: 100vh;
+            /* background-image: url('https://idri.cadt.edu.kh/storage/pages/homepage/homeidri.png'); */
+            background-color: rgba(22, 22, 22, 1);
+            background-size: cover;
+            background-position: center;
+            
+        }
+        h3{
+            margin: 15px;
+            margin-top: 40vh;
+        }
+        h1{
+            padding: 15px;
         }
     </style>
 </head>
 <body>
-    <h1>Khmer License Plate System Demo</h1>
-    <div>
-        <p>Some information will be here in the future.</p>
+    
+    <div class="container">
+        <h1 style="text-align: left;">Khmer License Plate Recognition</h1>
+        <h3>Deomo Baseline Model</h3>
+        <hr style="width: 15%; margin: 0 auto;">
+        <p style="margin-top: 30px;">We have the ability to work with images that depict vehicles alongside their visible number plates.</p>
+        <form action="/image" method="get">
+            <input type="submit" value="Test Image">
+        </form>
+    
+        <!-- <form action="/video" method="get" target="_blank">
+            <input type="submit" value="Test with video">
+        </form> -->
     </div>
-    <form action="/image" method="get" target="_blank">
-        <input type="submit" value="Test with image">
-
-    </form>
-
-    <form action="/video" method="get" target="_blank">
-        <input type="submit" value="Test with video">
-    </form>
+    
     
 </body>
 </html>

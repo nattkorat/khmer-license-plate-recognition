@@ -7,7 +7,6 @@ info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/place_d
 seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/localize_plate_serial_model_yolov5.pt')
 
 
-
 def roi(img, opt: int): # return only one of detect object
     '''
         Extract only Region of Interest (license plate, or region of serial in plate)
