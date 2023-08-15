@@ -75,8 +75,8 @@ def upload_file():
             or_conf = 0
             for inf in orgin:
                 print(inf)
-                if inf[-1] >= 0.5:
-                    or_conf = inf[-1]
+                if inf[-1] >= 0.3:
+                    or_conf += inf[-1]
                     or_txt = inf[1]
 
             pre_img = image_pre.pre_process(plate[b:b1, a:a1])
@@ -88,8 +88,8 @@ def upload_file():
 
             for inf in processed:
                 print(inf)
-                if inf[-1] >= 0.5:
-                    pro_txt = inf[1]
+                if inf[-1] >= 0.3:
+                    pro_txt += inf[1]
                     pro_conf = inf[-1]
 
             if or_conf > pro_conf:
@@ -135,8 +135,8 @@ def upload_file():
             or_conf = 0
             for inf in orgin:
                 print(inf)
-                if inf[-1] >= 0.5:
-                    or_conf = inf[-1]
+                if inf[-1] >= 0.3:
+                    or_conf += inf[-1]
                     or_txt = inf[1]
 
             pre_img = image_pre.pre_process(plate)
@@ -148,8 +148,8 @@ def upload_file():
 
             for inf in processed:
                 print(inf)
-                if inf[-1] >= 0.5:
-                    pro_txt = inf[1]
+                if inf[-1] >= 0.3:
+                    pro_txt += inf[1]
                     pro_conf = inf[-1]
 
             if or_conf > pro_conf:
