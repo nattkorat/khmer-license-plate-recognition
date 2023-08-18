@@ -49,7 +49,7 @@ def upload_file():
 
 
         plate = image[y:y1, x:x1].copy()
-        cv2.imwrite('plate.jpg', plate)
+        # cv2.imwrite('plate.jpg', plate)
 
         place, bbox = extract.get_info(plate)
 
@@ -57,7 +57,7 @@ def upload_file():
         if len(bbox) >= 4:
             cv2.rectangle(pl_img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0,255,0), 2)
 
-        cv2.imwrite('place_det.jpg', pl_img)
+        # cv2.imwrite('place_det.jpg', pl_img)
 
         image = plotting.plotting(image, r, place)
         
@@ -67,7 +67,7 @@ def upload_file():
             serials = serials[0]
             a, b, a1, b1 = serials
 
-            cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
+            # cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
 
             orgin = reader.readtext(plate[b:b1, a:a1])
 
@@ -104,7 +104,7 @@ def upload_file():
             image = plotting.plotting(image, r, place + ' ' + serial_val)
 
             # info = reader.readtext(plate[0:b1, 0:a1])
-            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
+            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
 
             # serial_val = []
 
@@ -161,7 +161,7 @@ def upload_file():
 
             serial_val = post_process.char_map(serial_val, place) # apply post process method
             image = plotting.plotting(image, r, place + ' ' + serial_val)
-            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
+            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
 
 
             # info = reader.readtext(sh_img, paragraph=True)
@@ -198,7 +198,7 @@ def upload_file():
         })
 
     # save the figure
-    cv2.imwrite('image.jpg', image)
+    # cv2.imwrite('image.jpg', image)
 
     # Convert the CV2 image to a binary format (PNG or JPEG)
     _, buffer = cv2.imencode('.jpg', image)
