@@ -1,0 +1,11 @@
+.git
+test
+runs
+det_serial
+test_img
+*.ipynb
+*.csv
+*.mp4
+*.jpg
+*.jpeg
+*.png

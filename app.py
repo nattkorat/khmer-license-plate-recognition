@@ -194,7 +194,7 @@ def upload_file():
             "plate_name": place,
             "serial_value": serial_val,
             "conf": conf,
-            "datetime": datetime.now(time_zone)
+            "datetime": str(datetime.now(time_zone))
         })
 
     # save the figure

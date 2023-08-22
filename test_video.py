@@ -9,11 +9,17 @@ is_gpu = torch.cuda.is_available()
 print('GPU:', is_gpu)
 reader = easyocr.Reader(['en'], gpu = is_gpu)
 
-# Replace 'path_to_video_file.mp4' with the actual path to your video file
-video_path = 'IMG_04.mp4'
+# Replace 'your_camera_ip' with the actual IP address of your camera
+username = 'camtest'
+password = 'Idri@2023'
+camera_url = f'rtsp://{username}:{password}@172.23.33.29:88/videoMain'
 
 # Create a VideoCapture object to read the video file
-cap = cv2.VideoCapture(video_path)
+cap = cv2.VideoCapture(camera_url)
+
+# Set the desired width and height
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 250)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 # Check if the video file was opened successfully
 if not cap.isOpened():
@@ -115,11 +121,12 @@ while True:
                 image = plotting.plotting(image, r, place + ' ' + txt)
 
                 print(txt)
+    resized_frame = cv2.resize(image, (1280, 720))
 
-    cv2.imshow('Video', image)
+    cv2.imshow('Video', resized_frame)
 
     # Check for 'q' key to exit the loop
-    if cv2.waitKey(0) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 # Release the VideoCapture and close the OpenCV windows
