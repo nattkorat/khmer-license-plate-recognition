@@ -103,28 +103,7 @@ def upload_file():
 
             image = plotting.plotting(image, r, place + ' ' + serial_val)
 
-            # info = reader.readtext(plate[0:b1, 0:a1])
-            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
-
-            # serial_val = []
-
-            # print(info)
             
-            # for inf in info:
-            #     txt = inf[-1]
-
-            #     # clean text
-            #     txt = post_process.char_map(txt, place) # need to apply type of license plate next time
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     serial_val.append(txt) # get data from reader
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     print(txt)
         else:
             if len(bbox) > 0:
                 plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
@@ -161,32 +140,6 @@ def upload_file():
 
             serial_val = post_process.char_map(serial_val, place) # apply post process method
             image = plotting.plotting(image, r, place + ' ' + serial_val)
-            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
-
-
-            # info = reader.readtext(sh_img, paragraph=True)
-
-            # # info = reader.readtext(plate[0:b1, 0:a1])
-            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
-
-            # serial_val = []
-
-            # print(info)
-            
-            # for inf in info:
-            #     # txt = post_process.remove_space_special_chars(inf[-1]).upper()
-            #     txt = inf[-1]
-
-            #     # clean text
-            #     txt = post_process.char_map(txt, place) # need to apply type of license plate next time
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     serial_val.append(txt) # get data from reader
-
-            #     print(txt)
-
 
         result.append({
             "plate_roi": r,
@@ -196,9 +149,6 @@ def upload_file():
             "conf": conf,
             "datetime": str(datetime.now(time_zone))
         })
-
-    # save the figure
-    # cv2.imwrite('image.jpg', image)
 
     # Convert the CV2 image to a binary format (PNG or JPEG)
     _, buffer = cv2.imencode('.jpg', image)
