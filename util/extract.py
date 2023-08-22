@@ -3,8 +3,8 @@ import torch
 
 
 # model initial
-info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/place_detection_model_yolov5.pt') 
-seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/localize_plate_serial_model_yolov5.pt')
+info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/v2_place_detection_model_yolov5.pt') 
+seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/v2_localize_plate_serial_model_yolov5.pt')
 
 
 def roi(img, opt: int): # return only one of detect object
@@ -51,11 +51,8 @@ if __name__ == '__main__': # to test if it works or not
     import plotting
 
     img = cv2.imread('place_det.jpg')
-    result = roi(img, 1)
+    result = get_info(img)
     print(result)
-    for re in result:
-        img = plotting.plotting(img, re)
+    
 
-    cv2.imshow('test', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    
