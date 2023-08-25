@@ -58,143 +58,51 @@ def upload_file():
             cv2.rectangle(pl_img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0,255,0), 2)
 
         cv2.imwrite('place_det.jpg', pl_img)
-
-        image = plotting.plotting(image, r, place)
         
 
         serials = extract.roi(plate, 1)
-        if len(serials) > 0: 
+
+        # set default to image for do ocr
+        img_for_ocr = plate
+        if len(serials) > 0:
             serials = serials[0]
             a, b, a1, b1 = serials
 
-            cv2.imwrite('serial.jpg', plate[b:b1, a:a1])
-
-            orgin = reader.readtext(plate[b:b1, a:a1])
-
-            or_txt = ''
-            or_conf = 0
-            for inf in orgin:
-                print(inf)
-                if inf[-1] >= 0.3:
-                    or_conf += inf[-1]
-                    or_txt = inf[1]
-
-            pre_img = image_pre.pre_process(plate[b:b1, a:a1])
-            sh_img = image_pre.img_shapen(pre_img)
-            processed = reader.readtext(sh_img)
-
-            pro_txt = ''
-            pro_conf = 0
-
-            for inf in processed:
-                print(inf)
-                if inf[-1] >= 0.3:
-                    pro_txt += inf[1]
-                    pro_conf = inf[-1]
-
-            if or_conf > pro_conf:
-                conf = or_conf
-                serial_val = or_txt
-            else:
-                conf = pro_conf
-                serial_val = pro_txt
-            
-            serial_val = post_process.char_map(serial_val, place) # apply post process method
-
-            image = plotting.plotting(image, r, place + ' ' + serial_val)
-
-            # info = reader.readtext(plate[0:b1, 0:a1])
-            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
-
-            # serial_val = []
-
-            # print(info)
-            
-            # for inf in info:
-            #     txt = inf[-1]
-
-            #     # clean text
-            #     txt = post_process.char_map(txt, place) # need to apply type of license plate next time
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     serial_val.append(txt) # get data from reader
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     print(txt)
+            img_for_ocr = plate[b:b1, a:a1].copy()
         else:
             if len(bbox) > 0:
-                plate = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
-            
-            orgin = reader.readtext(plate)
+                img_for_ocr = cv2.rectangle(plate, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255,255,255), -1)
+        
+        origin_ocr = reader.readtext(img_for_ocr)
 
-            or_txt = ''
-            or_conf = 0
-            for inf in orgin:
-                print(inf)
-                if inf[-1] >= 0.3:
-                    or_conf += inf[-1]
-                    or_txt = inf[1]
+        label_conf = [{"label": t[-2], "conf": t[-1]} for t in origin_ocr]
 
-            pre_img = image_pre.pre_process(plate)
-            sh_img = image_pre.img_shapen(pre_img)
-            processed = reader.readtext(sh_img)
+        
 
-            pro_txt = ''
-            pro_conf = 0
+        preprocess_img = image_pre.img_shapen(image_pre.pre_process(img_for_ocr))
 
-            for inf in processed:
-                print(inf)
-                if inf[-1] >= 0.3:
-                    pro_txt += inf[1]
-                    pro_conf = inf[-1]
+        # set default serial value and its confident score
+        serial_val = ''
+        conf = 0
 
-            if or_conf > pro_conf:
-                conf = or_conf
-                serial_val = or_txt
-            else:
-                conf = pro_conf
-                serial_val = pro_txt
+        read_text = reader.readtext(preprocess_img)
+        for t in read_text:
+            label_conf.append({"label": t[-2], "conf": t[-1]})
+        
 
-            serial_val = post_process.char_map(serial_val, place) # apply post process method
-            image = plotting.plotting(image, r, place + ' ' + serial_val)
-            cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
+        for i in label_conf:
+            if len(i['label']) >= 6 and i['conf'] > conf:
+                serial_val = post_process.char_map(i['label'], place)
+                conf = i['conf']
 
-
-            # info = reader.readtext(sh_img, paragraph=True)
-
-            # # info = reader.readtext(plate[0:b1, 0:a1])
-            # cv2.imwrite(f'det_serial/{place}_{x}serial.jpg', sh_img)
-
-            # serial_val = []
-
-            # print(info)
-            
-            # for inf in info:
-            #     # txt = post_process.remove_space_special_chars(inf[-1]).upper()
-            #     txt = inf[-1]
-
-            #     # clean text
-            #     txt = post_process.char_map(txt, place) # need to apply type of license plate next time
-
-            #     # plot to the info to the image
-            #     image = plotting.plotting(image, r, place + ' ' + txt)
-
-            #     serial_val.append(txt) # get data from reader
-
-            #     print(txt)
-
-
+        image = plotting.plotting(image, r, place + ' ' + serial_val + ' ' + f'{conf:.3f}')
+        print(label_conf)
         result.append({
             "plate_roi": r,
-            "serial_roi": serials,
             "plate_name": place,
             "serial_value": serial_val,
             "conf": conf,
-            "datetime": datetime.now(time_zone)
+            "datetime": str(datetime.now(time_zone))
         })
 
     # save the figure
@@ -212,6 +120,13 @@ def upload_file():
     }
 
     return render_template('result.html',base64_image=base64_image, **end_result)
+
+
+
+@app.route('/camera')
+def cam():
+    return render_template('stream.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug= True)
