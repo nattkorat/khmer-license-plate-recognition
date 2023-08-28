@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ filename }}</title>
+    <title>Test with Camera</title>
     <style>
         /* Add your custom CSS styles here */
         body {
@@ -41,19 +41,17 @@
             color: #007bff;
             cursor: pointer;
         }
-        #prediction{
-            color: white;
-        }
     </style>
 </head>
 <body>
     <h1>Khmer License Plate Recognition</h1>
+    
     <form action="/" method="get">
         <input type="submit" value="Back">
     </form>
     <div class="container">
         <div class="image-container">
-            <img class="image" src="data:image/jpeg;base64,{{ base64_image }}" alt="Result">
+            <img class="image" src="http://172.23.33.40:5050/stream_camera" alt="Result">
         </div>
         <div class="prediction">
             <h2>Prediction: <span class="copy-icon" onclick="copyPrediction()">📋</span></h2>
@@ -64,33 +62,16 @@
     </div>
 
     <script>
-        var predictionData = {{ prediction|tojson|safe }};
-        var predictionText = JSON.stringify(predictionData, null, 2);
-        document.getElementById("prediction").textContent = predictionText;
-
-
-        function copyPrediction() {
-            // Get the prediction text element
-            var predictionText = document.getElementById("prediction");
-
-            // Create a temporary input element to hold the prediction text
-            var tempInput = document.createElement("textarea");
-            tempInput.value = predictionText.textContent;
-            document.body.appendChild(tempInput);
-
-            // Select the text in the input element
-            tempInput.select();
-            tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-            // Copy the selected text
-            document.execCommand("copy");
-
-            // Remove the temporary input element
-            document.body.removeChild(tempInput);
-
-            // Show a notification that the text is copied (optional)
-            alert("Prediction copied to clipboard!");
+        function fetchData(){
+            fetch('/get_data')
+            .then(response => response.json())
+            .then(data => {
+                const predict = document.getElementById('prediction');
+                predict.textContent = data;
+            })
         }
+
+        setInterval(fetchData, 5000)
     </script>
 </body>
 </html>

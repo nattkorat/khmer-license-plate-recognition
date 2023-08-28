@@ -6,6 +6,8 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: rgb(1, 1, 22);
+            color: #910404;
         }
         h1 {
             text-align: center;
@@ -23,16 +25,13 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            margin: 20px;
-            background-color: azure;
-            height: 40vh;
             width: 100%;
         }
     </style>
 </head>
 <body>
     <h1>Image Upload</h1>
-    <form action="/api/upload" method="post" enctype="multipart/form-data" class="ontainer">
+    <form action="/api/upload" method="post" enctype="multipart/form-data" class="container">
         <input type="file" name="file" id="imageInput" accept="image/*" required><br>
         <div id="imageContainer">
             <img id="uploadedImage" src="#" alt="Uploaded Image" style="max-width: 100%; max-height: 400px;">

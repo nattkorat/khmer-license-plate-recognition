@@ -17,6 +17,8 @@ def num_to_char(char):
         return 'a'
     if char == '8':
         return 'b'
+    if char == '6':
+        return 'g'
     return char
 
 def char_to_num(char):
@@ -28,12 +30,14 @@ def char_to_num(char):
         return '4'
     if char == 'b':
         return '8'
+    if char == 'g':
+        return '6'
     return char
 
 
 def char_map(txt, label = ''):
     string = list(remove_space_special_chars(txt.lower()))
-    print(string)
+    # print(string)
     length = len(string)
 
     if label in ['Police', 'State', 'RCAF']:
