@@ -1,67 +1,52 @@
-from collections import Counter
-import datetime
 import cv2
 from mjpeg_streamer import MjpegServer, Stream
-import torch
+from util import extract, plotting
+from flask import Flask, request, Response, jsonify
 
-import easyocr
-
-from util import extract, image_pre, plotting, post_process
+app = Flask(__name__)
 
 usr = "Cam21"
 password = "Idri@2023"
-ip = "172.23.32.231"
+ip = "172.23.32.181"
 
 cam = cv2.VideoCapture(f"rtsp://{usr}:{password}@{ip}:88/videoMain")
+# cam = cv2.VideoCapture("video/y2mate.is - 2020 camry review in khmer-22iyZsAuHe4-720p-1692774674.mp4")
+
+frame_rate = cam.get(cv2.CAP_PROP_FPS)
 
 stream = Stream("stream_camera", quality=50, fps=64)
 
 server = MjpegServer("0.0.0.0", 5050)
 server.add_stream(stream)
 
-# check if GPU is available
-is_gpu = torch.cuda.is_available()
-print('GPU:', is_gpu)
-reader = easyocr.Reader(['en'], gpu = is_gpu)
-
 report = [] # test data
 
 def main():
     server.start()
-
     while True:
         ret, frame = cam.read()
-        if cv2.waitKey(64) == ord("q"):
-            print('User exit the program')
-            break
-
         if not ret:
             print('No frame read')
             break
 
-        # Process the image
-        image = processingROI(frame)
-
         # Send to the stream
-        stream.set_frame(image)
+        stream.set_frame(frame)
+        
+        if cv2.waitKey(int(1000/frame_rate)) == ord("q"):
+            print('User exit the program')
+            break
 
     server.stop()
     cam.release()
     cv2.destroyAllWindows()
 
-def major_vote(data):
-    vote_count = Counter(data)
-    winner = vote_count.most_common(1)[0][0]
-    return winner
 
 def processingROI(frame):
     roi = extract.roi(frame, 0)
     for r in roi:
-        x, y, x1, y1 = r
-        frame = cv2.rectangle(frame, (x, y), (x1, y1), (0, 255, 0), 2)
+        frame = plotting.plotting(frame, r)
     
     return frame
-       
 
 # Run main program
 main()

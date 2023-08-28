@@ -51,7 +51,7 @@
     </form>
     <div class="container">
         <div class="image-container">
-            <img class="image" src="http://172.23.33.40:5050/my_camera" alt="Result">
+            <img class="image" src="http://172.23.33.40:5050/stream_camera" alt="Result">
         </div>
         <div class="prediction">
             <h2>Prediction: <span class="copy-icon" onclick="copyPrediction()">📋</span></h2>
@@ -60,5 +60,18 @@
             
         </div>
     </div>
+
+    <script>
+        function fetchData(){
+            fetch('/get_data')
+            .then(response => response.json())
+            .then(data => {
+                const predict = document.getElementById('prediction');
+                predict.textContent = data;
+            })
+        }
+
+        setInterval(fetchData, 5000)
+    </script>
 </body>
 </html>
