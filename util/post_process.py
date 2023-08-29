@@ -1,3 +1,4 @@
+from collections import Counter
 import re
 
 # removing spaces and other special characters
@@ -43,7 +44,7 @@ def char_map(txt, label = ''):
     if label in ['Police', 'State', 'RCAF']:
         for i in range(length):
             string[i] = char_to_num(string[i])
-            print(string[i])
+            # print(string[i])
         string.insert(1, '-')
         
     elif label == 'Cambodia':
@@ -87,6 +88,27 @@ def char_map(txt, label = ''):
     
     string = ''.join(string).upper()
     return string
+
+def major_vote(data: list):
+    vote_count = Counter(data)
+    winner = vote_count.most_common(1)[0][0]
+    return winner
+
+def check_order(data: list, threshold=0.7):
+    increasing = sum(data[i] < data[i+1] for i in range(len(data) - 1))
+    decreasing = sum(data[i] > data[i+1] for i in range(len(data) - 1))
+
+    total = len(data) - 1
+
+    inc_percent = increasing / total
+    dec_percent = decreasing / total
+
+    if inc_percent > threshold:
+        return "Increase"
+    elif dec_percent > threshold:
+        return "Decrease"
+    else:
+        return "Neigther"
 
 if __name__ == '__main__':
     print(char_map('2I6.661', 'Cambodia'))
