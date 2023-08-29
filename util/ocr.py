@@ -2,14 +2,12 @@ from datetime import datetime
 import cv2
 import easyocr
 import torch
-
 from util import extract, image_pre, post_process
 
 # check if GPU is available
 is_gpu = torch.cuda.is_available()
 print('GPU:', is_gpu)
 reader = easyocr.Reader(['en'], gpu = is_gpu)
-
 
 def processs_OCR(plate_data, xyxy = [0,0,0,0]):
     width, height = xyxy[2] - xyxy[0], xyxy[3] - xyxy[1]
