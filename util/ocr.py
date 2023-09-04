@@ -1,4 +1,3 @@
-from datetime import datetime
 import cv2
 import easyocr
 import torch
@@ -48,7 +47,6 @@ def processs_OCR(plate_data, xyxy = [0,0,0,0]):
         "plate_name": place,
         "serial_value": serial_val,
         "conf": conf,
-        "datetime": datetime.now(),
         "ROI": xyxy,
         "plate_size": size,
         "center": point
