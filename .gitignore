@@ -3,6 +3,7 @@ runs
 test
 util/__pycache__
 test_img
+__pycache__/
 
 # ignore all images, weights and notebook and data
 *.jpg

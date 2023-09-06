@@ -90,23 +90,28 @@ def char_map(txt, label = ''):
     return string
 
 def major_vote(data: list):
-    vote_count = Counter(data)
-    winner = vote_count.most_common(1)[0][0]
-    return winner
+    if data:
+        vote_count = Counter(data)
+        winner = vote_count.most_common(1)[0][0]
+        return winner
+    return None
 
 def check_order(data: list, threshold=0.7):
-    increasing = sum(data[i] < data[i+1] for i in range(len(data) - 1))
-    decreasing = sum(data[i] > data[i+1] for i in range(len(data) - 1))
+    if len(data) > 1:
+        increasing = sum(data[i] < data[i+1] for i in range(len(data) - 1))
+        decreasing = sum(data[i] > data[i+1] for i in range(len(data) - 1))
 
-    total = len(data) - 1
+        total = len(data) - 1
 
-    inc_percent = increasing / total
-    dec_percent = decreasing / total
+        inc_percent = increasing / total
+        dec_percent = decreasing / total
 
-    if inc_percent > threshold:
-        return "Increase"
-    elif dec_percent > threshold:
-        return "Decrease"
+        if inc_percent > threshold:
+            return "Increase"
+        elif dec_percent > threshold:
+            return "Decrease"
+        else:
+            return "Neigther"
     else:
         return "Neigther"
 

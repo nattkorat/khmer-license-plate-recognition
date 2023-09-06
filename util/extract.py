@@ -1,6 +1,7 @@
-import torch
+import torch, cv2
 from util.post_process import major_vote
 from ultralytics import YOLO
+
 # model initial
 info_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/v2_place_detection_model_yolov5.pt', verbose=False) 
 seg_model =  torch.hub.load('ultralytics/yolov5', 'custom', path='models/localize_plate_serial_model_yolov5.pt', verbose=False)
@@ -13,6 +14,7 @@ def is_vehicle(img):
     for re in result:
         for r in re.boxes:
             if int(r.cls) in [2,5,7]:
+                bbox = [int(i) for i in r.xyxy[0].tolist()]
                 return True
     return False
 
@@ -25,6 +27,9 @@ def front_rear(img):
         1: front
         None: not detected
     """
+    if type(img) == str:
+        img = cv2.imread(img)
+
     detect = front_rear_model(img, size=640)
     data = []
     for result in detect.xyxy:

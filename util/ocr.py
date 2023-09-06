@@ -2,18 +2,26 @@ import cv2
 import easyocr
 import torch
 from util import extract, image_pre, post_process
+import time
 
 # check if GPU is available
 is_gpu = torch.cuda.is_available()
 print('GPU:', is_gpu)
 reader = easyocr.Reader(['en'], gpu = is_gpu)
-
+counter = 1
 def processs_OCR(plate_data, xyxy = [0,0,0,0]):
+    # set default serial value and its confident score
+    global counter
+    serial_val = ''
+    conf = 0
     width, height = xyxy[2] - xyxy[0], xyxy[3] - xyxy[1]
     size = width * height
     point = (width + height) / 2
-    place, bbox = extract.get_info(plate_data)  
+    place, bbox = extract.get_info(plate_data)
+
+
     serials = extract.roi(plate_data, 1)
+    print(f'Process: {counter}')
 
     # set default to image for do ocr
     img_for_ocr = plate_data
@@ -30,9 +38,6 @@ def processs_OCR(plate_data, xyxy = [0,0,0,0]):
 
     preprocess_img = image_pre.img_shapen(image_pre.pre_process(img_for_ocr))
 
-    # set default serial value and its confident score
-    serial_val = ''
-    conf = 0
 
     read_text = reader.readtext(preprocess_img)
     for t in read_text:
@@ -42,6 +47,8 @@ def processs_OCR(plate_data, xyxy = [0,0,0,0]):
         if len(i['label']) >= 6 and i['conf'] > conf:
             serial_val = post_process.char_map(i['label'], place)
             conf = i['conf']
+    counter += 1
+        
 
     return {
         "plate_name": place,
