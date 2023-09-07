@@ -9,12 +9,14 @@ front_rear_model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/f
 vehicle_detect_model = YOLO()
 
 # check if the vehicle appear in the frame
-def is_vehicle(img):
+def is_vehicle(img, is_bbox = False):
     result = vehicle_detect_model.predict(img, verbose = False)
     for re in result:
         for r in re.boxes:
             if int(r.cls) in [2,5,7]:
                 bbox = [int(i) for i in r.xyxy[0].tolist()]
+                if is_bbox:
+                    return bbox
                 return True
     return False
 
