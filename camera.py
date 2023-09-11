@@ -1,4 +1,4 @@
-import cv2
+import cv2, os
 import analyze
 from datetime import datetime
 from util.plotting import plotting
@@ -22,15 +22,19 @@ while True:
         break
 
     current_time = datetime.now().microsecond
-    if abs(current_time - initial_time) >= 100000: # 1000000 microseconds per second
+    if abs(current_time - initial_time) >= 200000: # 1000000 microseconds per second
         if analyze.detected(frame): # this will work utill the model detect the vehicle and plate
             initial_time = datetime.now().microsecond # set the initial time to the current time in the machine
             file_name = analyze.server_datetime()
             cv2.imwrite(f'temp_img/{file_name}.jpg', frame) # save the frame to the temp folder that can allow model to predict and save data from it
+            with open('tem_img.txt', 'a') as file:
+                file.write(f'temp_img/{file_name}.jpg\n')
             print('Writing image:',file_name)
-        else:
-            analyze.process_data('temp_img')
 
+        elif len(os.listdir('temp_img')):
+                analyze.process_data('tem_img.txt')
+            
+            
     xyxy = analyze.vehicle_xyxy(frame)
     if xyxy:
         frame = plotting(frame, xyxy)  

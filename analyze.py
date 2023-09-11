@@ -1,13 +1,13 @@
-from time import time
-start = time()
+import time
+load = time.time()
 import os, csv, cv2, shutil
 from util.extract import roi, front_rear, is_vehicle
 from util.ocr import processs_OCR
 from util.post_process import major_vote, check_order
 from datetime import datetime
-end = time()
+finish = time.time()
 
-print(f"Model loaded in {end - start: .4f} seconds")
+print(f"Model loaded in {finish - load: .4f} seconds")
 
 # make the directory if not yet created
 os.makedirs('ref_img', exist_ok=True)
@@ -41,8 +41,6 @@ def save_data(filename, data):
         writer = csv.writer(csvfile)
         if not file_exist:
             writer.writerow(['date', 'time', 'status (0:exit, 1:entrance)', 'plate_size', 'plate', 'conf', 'ref'])
-
-
         last = get_last_row_from_csv(filename)
         if not last: # if there is no data in the csv file yet
             writer.writerow(data)
@@ -61,27 +59,38 @@ def detected(frame): # check if the vehicle appears in the frame
         data = roi(frame, 0)
         for d in data:
             width, height = d[2] - d[0], d[3] - d[1]
-            if width >= 100 or height >= 100: # detect untill the size of the plate is greater than or equal to 100
+            if height > 50: # detect untill the height of the plate is greater than 50
                 return True
-    else:
-        return False
+    return False
 
 def vehicle_xyxy(frame):
     return is_vehicle(frame, True)
 
+def readRemove(path):
+    try:
+        with open(path, 'r') as file:
+            data = file.read()
+        os.remove(path)    
+        return [i for i in data.split('\n') if i]
+    except:
+        return []
 
-def process_data(tem_dir):
-    imgs = os.listdir(tem_dir)
 
+def process_data(temfile):
+    """
+        param: temfile
+                txt directory file
+    """
+    start = time.time()
+    imgs = readRemove(temfile)
     if len(imgs) > 0: # work if the folder is not empty
         results = []
-        images = [os.path.join(tem_dir, i) for i in imgs]
-        for img in images:       
+        for img in imgs:       
             # analyze the image
             data = analyzer(img)
                     
             for d in data:
-                if d['plate_name'] == '' or d['serial_value'] == '' or d['conf'] < 0.5:
+                if d['serial_value'] == '' or d['conf'] < 0.35:
                     pass
                 else:
                     results.append(d)
@@ -109,22 +118,24 @@ def process_data(tem_dir):
                         print(filename)
                         datetime_element = filename.split('_')
                         date = "-".join(datetime_element[:3])
-                        time = ":".join(datetime_element[3:-1])
+                        det_time = ":".join(datetime_element[3:-1])
                         plate = matched[i]['plate_name'] + ' ' + matched[i]['serial_value']
                         ref = matched[i]['file_path']
 
                         # add data to csv file
-                        saved = save_data('record.csv', [date, time, status, order, plate, max_conf, ref])
+                        saved = save_data('record.csv', [date, det_time, status, order, plate, max_conf, ref])
                         # save image as a reference
                         if saved:
                             shutil.copyfile(ref, f'ref_img/{filename}')
                         break # if the data is redundant
 
         # clear the temporary image from temp_img folder
-        [os.remove(i) for i in images]
+        end = time.time()
+        [os.remove(i) for i in imgs]
+        print('-----------------------------')
+        print(f'{len(imgs)} images - {end - start: .2f} seconds')
+        print('-----------------------------')
 
 if __name__ == '__main__':
-    start = time()
-    process_data('temp_img')
-    end = time()
-    print(f"The execution time of the recognition {len(os.listdir('temp_img'))} images is: {end - start: .4f} seconds")
+    process_data('tem_img.txt')
+    

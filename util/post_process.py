@@ -54,7 +54,6 @@ def char_map(txt, label = ''):
                 string[i] = '.'
             if string[i] == ' ':
                 string[i] = ''
-
     else:
         if length > 0:
             first = string[0]
@@ -83,9 +82,6 @@ def char_map(txt, label = ''):
         
         if length == 6:
             string.insert(2, '-')
-
-
-    
     string = ''.join(string).upper()
     return string
 
