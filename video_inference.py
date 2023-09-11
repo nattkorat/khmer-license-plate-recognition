@@ -2,17 +2,25 @@ import cv2, os
 import analyze
 from datetime import datetime
 from util.plotting import plotting
+import argparse
+
+parse = argparse.ArgumentParser()
+parse.add_argument("video_path", type=str, help="Path to the vidoe file")
+arge = parse.parse_args()
 
 # usr = "Cam21"
 # password = "Idri2023"
 # ip = "172.23.32.232"
 
 # cam = cv2.VideoCapture(f"rtsp://{usr}:{password}@{ip}:88/videoMain")
-cam = cv2.VideoCapture("vid_demo/C1588.MP4")
+cam = cv2.VideoCapture(arge.video_path)
 
 if not cam.isOpened():
     print("Error: Could not open video file.")
     exit()
+
+# Get the frame rate of the video
+frame_rate = int(cam.get(cv2.CAP_PROP_FPS))
 
 initial_time = datetime.now().microsecond
 while True:
