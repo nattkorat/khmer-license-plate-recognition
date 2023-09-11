@@ -45,7 +45,7 @@ def upload_file():
     for r in roi:
         x, y, x1, y1 = r
         plate = image[y:y1, x:x1].copy()
-        cv2.imwrite('plate.jpg', plate)
+        # cv2.imwrite('plate.jpg', plate)
         data = processs_OCR(plate, r)
         image = plotting.plotting(image, r, data['plate_name'] + ' ' + data['serial_value'] + ' ' + f'{data["conf"]:.3f}')
 
