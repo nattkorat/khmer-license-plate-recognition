@@ -17,7 +17,7 @@ def analyzer(img_path):
     image = cv2.imread(img_path)
     plates = roi(image, 0)
     data = []
-    for plate in plates:
+    for plate in plates: 
         result = processs_OCR(image, plate)
         result['file_path'] = img_path
         data.append(result)
@@ -59,7 +59,7 @@ def detected(frame): # check if the vehicle appears in the frame
         data = roi(frame, 0)
         for d in data:
             width, height = d[2] - d[0], d[3] - d[1]
-            if height > 50: # detect untill the height of the plate is greater than 50
+            if height >= 50: # detect untill the height of the plate is greater than 50
                 return True
     return False
 
@@ -112,7 +112,7 @@ def process_data(temfile):
                 order = check_order([i['plate_size'] for i in matched], 0.5) # set threshold to 50%
                 # get the result
                 for i in range(len(matched)):
-                    if matched[i]['conf'] == max_conf: # get the data with hight confident score
+                    if matched[i]['conf'] == max_conf: # get the data with high confident score
                         # save data to csv [date, time, status, plate, conf, ref]
                         filename = os.path.split(matched[i]['file_path'])[-1]
                         print(filename)

@@ -30,7 +30,7 @@ while True:
         break
 
     current_time = datetime.now().microsecond
-    if abs(current_time - initial_time) >= 200000: # 1000000 microseconds per second
+    if abs(current_time - initial_time) >= 100000: # 1000000 microseconds per second
         if analyze.detected(frame): # this will work utill the model detect the vehicle and plate
             initial_time = datetime.now().microsecond # set the initial time to the current time in the machine
             file_name = analyze.server_datetime()
