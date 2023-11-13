@@ -20,6 +20,8 @@ def num_to_char(char):
         return 'b'
     if char == '6':
         return 'g'
+    if char == '5':
+        return 's'
     return char
 
 def char_to_num(char):
@@ -33,6 +35,9 @@ def char_to_num(char):
         return '8'
     if char == 'g':
         return '6'
+    if char == 's':
+        return '5'
+    
     return char
 
 

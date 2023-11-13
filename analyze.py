@@ -59,12 +59,17 @@ def detected(frame): # check if the vehicle appears in the frame
         data = roi(frame, 0)
         for d in data:
             width, height = d[2] - d[0], d[3] - d[1]
-            if height >= 50: # detect untill the height of the plate is greater than 50
+            if width*height >= 5000: # expect that width at least 100 and height at least 50
                 return True
     return False
 
 def vehicle_xyxy(frame):
     return is_vehicle(frame, True)
+
+def plate_xyxy(frame):
+    data = roi(frame, 0)
+    for d in data:
+        return d
 
 def readRemove(path):
     try:
@@ -74,7 +79,6 @@ def readRemove(path):
         return [i for i in data.split('\n') if i]
     except:
         return []
-
 
 def process_data(temfile):
     """
@@ -92,6 +96,8 @@ def process_data(temfile):
             for d in data:
                 if d['serial_value'] == '' or d['conf'] < 0.35:
                     pass
+                # if d['plate_name'] == '':
+                #     pass
                 else:
                     results.append(d)
         if results:
@@ -122,8 +128,18 @@ def process_data(temfile):
                         plate = matched[i]['plate_name'] + ' ' + matched[i]['serial_value']
                         ref = matched[i]['file_path']
 
+                        if matched[i]['plate_name'] == '': # check again if data is not satisfying
+                            best_img = cv2.imread(ref)
+                            region = roi(best_img, 0)
+                            for r in region:
+                                x, y, x1, y1 = r
+                                b_plate = best_img[y:y1, x:x1].copy()
+                                # cv2.imwrite('plate.jpg', plate)
+                                b_data = processs_OCR(b_plate, r)
+                                plate = b_data['plate_name'] + ' ' + b_data['serial_value']
+
                         # add data to csv file
-                        saved = save_data('record.csv', [date, det_time, status, order, plate, max_conf, ref])
+                        saved = save_data('record.csv', [date, det_time, status, order, plate, max_conf, ref.split('/')[-1]])
                         # save image as a reference
                         if saved:
                             shutil.copyfile(ref, f'ref_img/{filename}')

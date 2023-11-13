@@ -4,7 +4,7 @@ from util.ocr import processs_OCR
 from util.post_process import check_order, major_vote
 
 # Replace 'path_to_video_file.mp4' with the actual path to your video file
-video_path = 'video/IMG_0482.MOV'
+video_path = 'vid_demo/Movie on 20-10-23 at 8.32 in the morning.mp4'
 
 # Create a VideoCapture object to read the video file
 cap = cv2.VideoCapture(video_path)

@@ -30,7 +30,7 @@ while True:
         break
 
     current_time = datetime.now().microsecond
-    if abs(current_time - initial_time) >= 100000: # 1000000 microseconds per second
+    if abs(current_time - initial_time) >= 400000: # 1000000 microseconds per second
         if analyze.detected(frame): # this will work utill the model detect the vehicle and plate
             initial_time = datetime.now().microsecond # set the initial time to the current time in the machine
             file_name = analyze.server_datetime()
@@ -45,10 +45,15 @@ while True:
             
     xyxy = analyze.vehicle_xyxy(frame)
     if xyxy:
-        frame = plotting(frame, xyxy)  
-    cv2.imshow('Frame', frame)
+        plate_xyxy = analyze.plate_xyxy(frame)
+        frame = plotting(frame, xyxy)
+        if plate_xyxy:
+            frame = plotting(frame, plate_xyxy)
+    
+    resized = cv2.resize(frame, (1080, 640), interpolation = cv2.INTER_AREA)
+    cv2.imshow('Frame', resized)
 
-    if cv2.waitKey(1) & 0xff == ord('q'):
+    if cv2.waitKey(16) & 0xff == ord('q'):
         break
     
 cam.release()
