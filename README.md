@@ -9,7 +9,7 @@ Clone the project to your local machine. I recomment you to clone it using vs co
 
 ### Install Dependencies
 
-You can install all dependencie on you local machine, but to avoid the conflic with other project dependencies you should create a virtual environment.
+You can install all dependencie on you local machine, but to avoid the conflic with other project dependencies you should create a virtual environment (note that the project was testing with python version 3.10).
 
 To create virtaul environment, in the terminal run the command:
 
@@ -55,5 +55,5 @@ Or on other machine, it can access by your ip address follow by the the same por
 
 On the detection processing script is in the "util/extract.py" file.
 
-### Testing with video
+
 
