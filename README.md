@@ -57,7 +57,6 @@ On the detection processing script is in the "util/extract.py" file.
 
 #### Video Demo
 
-<iframe width="420" height="345" src="https://www.youtube.com/embed/CDEA3Obpe5c?si=uLXinbm4mjz3qxUc">
-</iframe>
+<img src="car_exit_demo.gif">
 
 
