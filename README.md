@@ -55,7 +55,7 @@ Or on other machine, it can access by your ip address follow by the the same por
 
 On the detection processing script is in the "util/extract.py" file.
 
-#### Video Demo
+#### Video Demo <a href="https://youtu.be/CDEA3Obpe5c?feature=shared">link</a>
 
 <img src="car_exit_demo.gif">
 
