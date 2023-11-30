@@ -11,7 +11,21 @@ Clone the project to your local machine. I recomment you to clone it using vs co
 
 You can install all dependencie on you local machine, but to avoid the conflic with other project dependencies you should create a virtual environment.
 
-On your terminal install the dependencies from requirements.txt
+To create virtaul environment, in the terminal run the command:
+
+        python -m venv .venv
+
+After created the virtault enviroment, you need to activate it by run the command:
+
+- in Windows:
+
+         .venv/Scripts/activate 
+
+- in Linux/Mac:
+
+        source .venv/bin/activate
+
+After activation the virtual environment, on your terminal install the dependencies from requirements.txt
 
         pip install -r requirements.txt
 
