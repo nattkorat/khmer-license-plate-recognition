@@ -60,3 +60,14 @@ On the detection processing script is in the "util/extract.py" file.
 <img src="car_exit_demo.gif">
 
 
+continue ..
+
+
+### Other references about the project
+
+ - Slide Presentation on Computer vision workshop <a href="">see slide</a>.
+
+
+
+#### NOTE:
+<i>This project is running and testing on Pop OS (Linux) system with high GPU</i>

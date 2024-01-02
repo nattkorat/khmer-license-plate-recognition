@@ -3,6 +3,7 @@ import analyze
 from datetime import datetime
 from util.plotting import plotting
 import argparse
+from util import ocr
 
 parse = argparse.ArgumentParser()
 parse.add_argument("video_path", type=str, help="Path to the vidoe file")
@@ -48,7 +49,8 @@ while True:
         plate_xyxy = analyze.plate_xyxy(frame)
         frame = plotting(frame, xyxy)
         if plate_xyxy:
-            frame = plotting(frame, plate_xyxy)
+            ocr_result = ocr.processs_OCR(frame, plate_xyxy)
+            frame = plotting(frame, plate_xyxy, f"{ocr_result['plate_name']} {ocr_result['serial_value']} {ocr_result['conf']: .2f}")
     
     resized = cv2.resize(frame, (1080, 640), interpolation = cv2.INTER_AREA)
     cv2.imshow('Frame', resized)
