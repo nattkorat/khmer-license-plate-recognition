@@ -60,14 +60,14 @@ On the detection processing script is in the "util/extract.py" file.
 <img src="car_exit_demo.gif">
 
 
-continue ..
-
 
 ### Other references about the project
 
- - Slide Presentation on Computer vision workshop <a href="">see slide</a>.
+ - Slide Presentation on Computer vision workshop <a href="https://cadtedu.sharepoint.com/:p:/s/RIResearchInnovation/EXhkQLYisjxBoLx7JkPtnYQBcDxnAkdr4XKqsH7xkXU_QQ?e=zxVyfW" target = "_blank">see slide</a>.
+ - Khmer License Plate Dataset: <a href="https://cadtedu.sharepoint.com/:u:/s/RIResearchInnovation/EQjkPEnedt5MpzVopHUNr8sBZ4uVa7lEXEcV9JYowh_1Bg?e=1RsYyj" target="_blank">klpr2023</a>
+ - Training notebooks of KLPR: <a href= "https://github.com/nattkorat/klpr-training.git" target="_blank"> KLPR-training</a>
 
 
 
 #### NOTE:
-<i>This project is running and testing on Pop OS (Linux) system with high GPU</i>
+<i>This project is running and testing on Pop OS (Linux) system with GPU NVIDIA GeForce RTX 4070, CUDA Version: 12.3</i>
